@@ -7,9 +7,9 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script>
-      let socket = io();
+      let socket = io("https://chess-backend-production-e330.up.railway.app");
     </script>
   </head>
   <body>
@@ -20,7 +20,8 @@
     <div id="pgn"></div>
 
     <script>
-      let playerColor = "{{color}}";
+      const urlParams = new URLSearchParams(window.location.search);
+      let playerColor = urlParams.get("color") || "white";
       console.log("Playing as " + playerColor);
     </script>
     <script src="/public/js/index.js"></script>
