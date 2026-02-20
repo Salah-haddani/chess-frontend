@@ -21,10 +21,14 @@
 
     <script>
       $("#createGame").on("click", function () {
-        window.location.replace("/white?code=" + $("#codeInput").val());
+        window.location.replace(
+          "game.html?color=white?code=" + $("#codeInput").val()
+        );
       });
       $("#joinGame").on("click", function () {
-        window.location.replace("/black?code=" + $("#codeInput").val());
+        window.location.replace(
+          "game.html?color=black?code=" + $("#codeInput").val()
+        );
       });
 
       var urlParams = new URLSearchParams(window.location.search);
