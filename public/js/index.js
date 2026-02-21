@@ -115,6 +115,27 @@ if (urlParams.get("code")) {
   });
 }
 
+const username = urlParams.get("username") || "Anonymous";
+
+$("#sendMsg").on("click", function () {
+  const msg = $("#chatInput").val();
+  if (msg.trim() !== "") {
+    socket.emit("chatMessage", {
+      code: urlParams.get("code"),
+      user: username,
+      message: msg,
+    });
+    $("#chatInput").val("");
+  }
+});
+
+socket.on("newMessage", function (data) {
+  $("#chatMessages").append(
+    `<p><strong>${data.user}:</strong> ${data.message}</p>`
+  );
+  $("#chatMessages").scrollTop($("#chatMessages")[0].scrollHeight);
+});
+
 socket.on("startGame", function () {
   gameHasStarted = true;
   updateStatus();
