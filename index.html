@@ -1,35 +1,100 @@
 <!DOCTYPE html>
+<html>
   <head>
-    <script src="/public/js/jquery-3.7.0.min.js"></script>
-    <link rel="stylesheet" href="/public/css/chessboard-1.0.0.min.css" />
-    <script src="/public/js/chessboard-1.0.0.min.js"></script>
-    <script src="/public/js/chess-0.10.3.min.js"></script>
-
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-    <script>
-      let socket = io("https://chess-backend-production-e330.up.railway.app");
-    </script>
+    <script src="/public/js/jquery-3.7.0.min.js"></script>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #1a1a1a;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .login-card {
+        background: #2d2d2d;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        width: 350px;
+        text-align: center;
+      }
+      h2 {
+        margin-bottom: 25px;
+        color: #007bff;
+      }
+      input {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border-radius: 6px;
+        border: 1px solid #444;
+        background: #3d3d3d;
+        color: white;
+        box-sizing: border-box;
+      }
+      .btn-group {
+        display: flex;
+        gap: 10px;
+      }
+      button {
+        flex: 1;
+        padding: 12px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: 0.3s;
+      }
+      #createGame {
+        background: #007bff;
+        color: white;
+      }
+      #joinGame {
+        background: #28a745;
+        color: white;
+      }
+      button:hover {
+        opacity: 0.8;
+        transform: translateY(-2px);
+      }
+      #errorMessage {
+        margin-top: 15px;
+        font-size: 14px;
+      }
+    </style>
   </head>
   <body>
-    <h2>Game code</h2>
-    <input type="text" id="usernameInput" placeholder="Enter Username" />
-<input type="text" id="codeInput" placeholder="Game Code" />
-<button id="createGame">Create game</button>
-<button id="joinGame">Join game</button>
-    
-    <div style="color: red" id="errorMessage"></div>
+    <div class="login-card">
+      <h2>Multiplayer Chess</h2>
+      <input type="text" id="usernameInput" placeholder="Your Username" />
+      <input type="text" id="codeInput" placeholder="Game Code" />
+      <div class="btn-group">
+        <button id="createGame">Create</button>
+        <button id="joinGame">Join</button>
+      </div>
+      <div style="color: #ff4d4d" id="errorMessage"></div>
+    </div>
 
     <script>
+      var urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get("error") == "invalidCode")
+        $("#errorMessage").text("Invalid invite code");
+
       $("#createGame, #joinGame").on("click", function () {
-    const color = $(this).attr('id') === "createGame" ? "white" : "black";
-    const username = $("#usernameInput").val() || "Anonymous";
-    const code = $("#codeInput").val();
-    
-    // Pass username in the URL 
-    window.location.replace(`game.html?color=${color}&code=${code}&username=${username}`);
-  });
+        const color = $(this).attr("id") === "createGame" ? "white" : "black";
+        const username = $("#usernameInput").val() || "Anonymous";
+        const code = $("#codeInput").val();
+        if (!code) return alert("Please enter a code");
+        window.location.replace(
+          `game.html?color=${color}&code=${code}&username=${encodeURIComponent(
+            username
+          )}`
+        );
+      });
     </script>
   </body>
 </html>

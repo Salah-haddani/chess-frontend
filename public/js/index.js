@@ -130,9 +130,12 @@ $("#sendMsg").on("click", function () {
 });
 
 socket.on("newMessage", function (data) {
-  $("#chatMessages").append(
-    `<p><strong>${data.user}:</strong> ${data.message}</p>`
-  );
+  // Use a div with the 'msg' class for the new design
+  $("#chatMessages").append(`
+    <div class="msg">
+      <strong>${data.user}:</strong> ${data.message}
+    </div>
+  `);
   $("#chatMessages").scrollTop($("#chatMessages")[0].scrollHeight);
 });
 
